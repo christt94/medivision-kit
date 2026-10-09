@@ -1,0 +1,34 @@
+# Virtual environments
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# Databases
+*.db
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# VS Code (optional - keep if you want to share settings)
+# .vscode/
+
+# Large data files and patient/upload data
+backend/data/files/
+backend/data/samples/
+backend/data/refs.duckdb
+
+# Trained model artifacts (regenerate via scripts)
+backend/data/models/
+backend/models/
+
+# EEG recording files anywhere
+*.edf
+
+# Backup files
+*.bak
