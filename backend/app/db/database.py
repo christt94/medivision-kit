@@ -1,7 +1,12 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
+from app.core.config import settings
+from app.core.paths import runtime_path
 
-DATABASE_URL = "sqlite+aiosqlite:///./medivision.db"
+db_path = runtime_path(settings.SQLITE_PATH)
+db_path.parent.mkdir(parents=True, exist_ok=True)
+
+DATABASE_URL = f"sqlite+aiosqlite:///{db_path}"
 
 engine = create_async_engine(DATABASE_URL, echo=False)
 

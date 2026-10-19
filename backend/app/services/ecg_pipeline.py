@@ -3,10 +3,12 @@ from scipy.signal import butter, filtfilt, find_peaks
 import onnxruntime as ort
 import json, uuid, os
 from datetime import datetime
+from app.core.config import settings
+from app.core.paths import runtime_path
 
-_BASE       = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ONNX_PATH   = os.path.join(_BASE, "models", "signal", "ecg_classifier.onnx")
-LABELS_PATH = os.path.join(_BASE, "models", "signal", "ecg_labels.json")
+_MODEL_DIR  = runtime_path(settings.MODELS_DIR) / "signal"
+ONNX_PATH   = str(_MODEL_DIR / "ecg_classifier.onnx")
+LABELS_PATH = str(_MODEL_DIR / "ecg_labels.json")
 N_LEADS, N_SAMPLES, FS = 12, 1000, 100
 
 CIM11_MAP = {

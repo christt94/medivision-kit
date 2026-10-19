@@ -5,13 +5,14 @@ class AppShell extends StatelessWidget {
   final Widget child;
   const AppShell({super.key, required this.child});
 
-  static const _routes = ['/dashboard', '/patients', '/ecg', '/eeg'];
+  static const _routes = ['/dashboard', '/patients', '/ecg', '/eeg', '/imaging'];
 
   int _index(BuildContext context) {
     final loc = GoRouterState.of(context).uri.toString();
     if (loc.startsWith('/patients')) return 1;
     if (loc.startsWith('/ecg')) return 2;
     if (loc.startsWith('/eeg')) return 3;
+    if (loc.startsWith('/imaging')) return 4;
     return 0;
   }
 
@@ -68,6 +69,11 @@ class AppShell extends StatelessWidget {
                 icon: Icon(Icons.psychology_outlined),
                 selectedIcon: Icon(Icons.psychology),
                 label: Text('EEG'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.image_outlined),
+                selectedIcon: Icon(Icons.image),
+                label: Text('Imagerie'),
               ),
             ],
           ),

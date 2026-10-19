@@ -1,10 +1,13 @@
 #!/bin/bash
-BASE="$HOME/medivision-kit"
+set -euo pipefail
+
+BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "🚀 Starting MediVision Kit..."
 
 # ── Backend ──────────────────────────────────────────────────────────────────
-pkill -f "uvicorn app.main:app" 2>/dev/null; sleep 1
+pkill -f "uvicorn app.main:app" 2>/dev/null || true
+sleep 1
 cd "$BASE/backend"
 source .venv/bin/activate
 uvicorn app.main:app --reload --port 8000 &

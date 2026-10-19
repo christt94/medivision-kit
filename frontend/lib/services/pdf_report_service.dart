@@ -5,7 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
 
 class PdfReportService {
-  static const String _base = 'http://localhost:8000/api';
+  static const String _base = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000/api',
+  );
 
   static Future<void> downloadReport(
     BuildContext context,

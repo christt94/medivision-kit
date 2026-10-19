@@ -4,6 +4,8 @@ venv/
 
 # Environment variables
 .env
+.env.*
+!.env.example
 
 # Databases
 *.db
@@ -29,6 +31,16 @@ backend/models/
 
 # EEG recording files anywhere
 *.edf
+*.bdf
+*.gdf
+
+# Imaging files and local exports
+backend/data/files/
+backend/data/exports/
 
 # Backup files
 *.bak
+
+# Local Hugging Face/model caches if copied into the repository
+hf_cache/
+huggingface_cache/

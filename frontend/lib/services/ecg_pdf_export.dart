@@ -6,7 +6,10 @@ import 'package:printing/printing.dart';
 import 'package:universal_html/html.dart' as html;
 
 class EcgPdfExport {
-  static const String _base = 'http://localhost:8000/api';
+  static const String _base = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000/api',
+  );
 
   static Future<void> exportAndDownload({
     required Uint8List csvBytes,

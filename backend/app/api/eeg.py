@@ -1,4 +1,6 @@
-import shutil, json
+import json
+import shutil
+import uuid
 from pathlib import Path
 from typing import Optional
 from datetime import datetime
@@ -11,12 +13,13 @@ from sqlalchemy import text
 from app.db.database import get_db
 from app.db.models import Rapport
 from app.services.eeg_pipeline import EEGPipeline
+from app.core.config import settings
+from app.core.paths import runtime_path
 
 router = APIRouter()
 
-BASE_DIR   = Path(__file__).resolve().parents[2]
-MODEL_PATH = BASE_DIR / "data" / "models" / "signal" / "eeg_classifier.onnx"
-UPLOAD_DIR = BASE_DIR / "data" / "files" / "eeg"
+MODEL_PATH = runtime_path(settings.MODELS_DIR) / "signal" / "eeg_classifier.onnx"
+UPLOAD_DIR = runtime_path(settings.FILES_DIR) / "eeg"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 _pipeline = None
@@ -42,14 +45,23 @@ async def analyze_eeg(
     if ext not in allowed:
         raise HTTPException(400, detail=f"Format non supporté : {ext}")
 
-    save_path = UPLOAD_DIR / f"{patient_id}_{file.filename}"
+    # Never use the client-provided filename as a storage path. It can contain
+    # path separators and is not a safe filesystem identifier.
+    save_path = UPLOAD_DIR / f"{uuid.uuid4().hex}{ext}"
+    size = 0
     with open(save_path, "wb") as out:
-        shutil.copyfileobj(file.file, out)
+        while chunk := file.file.read(1024 * 1024):
+            size += len(chunk)
+            if size > settings.MAX_UPLOAD_BYTES:
+                save_path.unlink(missing_ok=True)
+                raise HTTPException(413, detail="Fichier trop volumineux")
+            out.write(chunk)
 
     try:
         pipeline = get_pipeline()
         result   = pipeline.analyze(str(save_path), patient_id, indication)
     except Exception as e:
+        save_path.unlink(missing_ok=True)
         raise HTTPException(500, detail=f"Erreur pipeline EEG : {e}")
 
     diag = result["diagnostic"]
@@ -167,9 +179,9 @@ async def export_pdf(
     # Cherche le fichier EDF original
     edf_path = None
     try:
-        edf_name = content.get("meta", {}).get("fichier", "")
-        candidate = UPLOAD_DIR / edf_name
-        if candidate.exists():
+        edf_name = Path(content.get("meta", {}).get("fichier", "")).name
+        candidate = (UPLOAD_DIR / edf_name).resolve()
+        if candidate.parent == UPLOAD_DIR.resolve() and candidate.exists():
             edf_path = str(candidate)
     except Exception:
         pass

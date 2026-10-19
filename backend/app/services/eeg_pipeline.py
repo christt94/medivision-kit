@@ -5,11 +5,12 @@ import numpy as np
 import mne
 import onnxruntime as rt
 from scipy.signal import stft
+from app.core.config import settings
+from app.core.paths import runtime_path
 
 logger = logging.getLogger(__name__)
-BASE_DIR    = Path(__file__).resolve().parents[2]
-MODEL_PATH  = BASE_DIR / "data" / "models" / "signal" / "eeg_classifier.onnx"
-LABELS_PATH = BASE_DIR / "data" / "models" / "signal" / "eeg_labels.json"
+MODEL_PATH  = runtime_path(settings.MODELS_DIR) / "signal" / "eeg_classifier.onnx"
+LABELS_PATH = runtime_path(settings.MODELS_DIR) / "signal" / "eeg_labels.json"
 
 class EEGPipeline:
     def __init__(self, model_path=str(MODEL_PATH), labels_path=str(LABELS_PATH)):

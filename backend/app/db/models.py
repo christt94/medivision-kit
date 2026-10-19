@@ -52,3 +52,20 @@ class EegRapport(Base):
     raw_json        = Column(Text)
     created_at      = Column(DateTime, server_default=func.now())
 
+
+class ImagingStudy(Base):
+    __tablename__ = "imaging_studies"
+    id                = Column(String, primary_key=True, default=new_uuid)
+    patient_id        = Column(String, nullable=False, index=True)
+    modality          = Column(String, nullable=False, default="XRAY")
+    indication        = Column(Text, default="")
+    original_filename = Column(String, nullable=False)
+    stored_filename   = Column(String, nullable=False, unique=True)
+    content_type      = Column(String, default="application/octet-stream")
+    size_bytes        = Column(Integer, nullable=False, default=0)
+    metadata_json     = Column(Text, default="{}")
+    status            = Column(String, nullable=False, default="PENDING_REVIEW")
+    model_name        = Column(String, default="not_configured")
+    result_json       = Column(Text, default="{}")
+    created_at        = Column(DateTime, server_default=func.now())
+

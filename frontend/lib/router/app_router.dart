@@ -9,6 +9,7 @@ import '../screens/eeg/eeg_upload_screen.dart';
 import '../screens/eeg/eeg_rapport_screen.dart';
 import '../screens/ecg/ecg_list_screen.dart' as ecg;
 import '../screens/eeg/eeg_list_screen.dart' as eeg;
+import '../screens/imaging/imaging_screen.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -32,8 +33,11 @@ class AppRouter {
           GoRoute(
             path: '/patients/:id',
             builder: (c, s) {
-              final patient = s.extra as Map<String, dynamic>;
-              return PatientDetailScreen(patient: patient);
+              final extra = s.extra;
+              if (extra is! Map<String, dynamic>) {
+                return const PatientsScreen();
+              }
+              return PatientDetailScreen(patient: extra);
             },
           ),
           GoRoute(
@@ -63,6 +67,10 @@ class AppRouter {
                 indication: extra?['indication'] as String?,
               );
             },
+          ),
+          GoRoute(
+            path: '/imaging',
+            builder: (c, s) => const ImagingScreen(),
           ),
           GoRoute(
             path: '/eeg/rapports/:patientId',

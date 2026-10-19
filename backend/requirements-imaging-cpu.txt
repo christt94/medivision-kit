@@ -1,0 +1,8 @@
+# Install the base application requirements first.
+-r requirements.txt
+
+# Optional CPU-only MedGemma adapter.
+# Python 3.11 is recommended for the broadest PyTorch wheel compatibility.
+torch>=2.4.0
+transformers>=4.50.0
+accelerate>=0.30.0

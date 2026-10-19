@@ -4,7 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
 
 class ApiClient {
-  static const String base = 'http://localhost:8000/api';
+  // Override for deployed/mobile environments with:
+  // flutter run --dart-define=API_BASE_URL=https://server.example/api
+  static const String base = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000/api',
+  );
 
   static Future<dynamic> get(String path) async {
     final res = await http.get(Uri.parse('$base$path'));
