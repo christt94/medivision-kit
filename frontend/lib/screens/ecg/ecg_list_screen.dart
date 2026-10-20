@@ -349,7 +349,7 @@ class _EcgListScreenState extends State<EcgListScreen> {
                                           vertical: 3,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: _reviewColor(level).withOpacity(0.12),
+                                          color: _reviewColor(level).withValues(alpha: 0.12),
                                           borderRadius: BorderRadius.circular(6),
                                         ),
                                         child: Text(

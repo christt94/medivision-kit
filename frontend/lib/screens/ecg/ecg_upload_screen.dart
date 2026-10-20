@@ -118,7 +118,9 @@ class _State extends State<EcgUploadScreen> {
         final now = DateTime.now();
         int age   = now.year - d.year;
         if (now.month < d.month ||
-            (now.month == d.month && now.day < d.day)) age--;
+            (now.month == d.month && now.day < d.day)) {
+          age--;
+        }
         setState(() => _age.text = age.toString());
       } catch (_) {}
     }
@@ -217,11 +219,11 @@ class _State extends State<EcgUploadScreen> {
                   horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
                   color: Theme.of(context)
-                    .colorScheme.primaryContainer.withOpacity(0.4),
+                    .colorScheme.primaryContainer.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: Theme.of(context).colorScheme.primary
-                      .withOpacity(0.3))),
+                      .withValues(alpha: 0.3))),
                 child: Row(children: [
                   CircleAvatar(
                     radius: 18,
@@ -255,7 +257,7 @@ class _State extends State<EcgUploadScreen> {
                 style: TextStyle(
                   fontSize: 12, fontWeight: FontWeight.w600,
                   color: Theme.of(context).colorScheme.onSurface
-                    .withOpacity(0.6))),
+                    .withValues(alpha: 0.6))),
               const SizedBox(height: 6),
 
               if (_selectedPatient != null) ...[
@@ -326,10 +328,10 @@ class _State extends State<EcgUploadScreen> {
                       color: Theme.of(context).colorScheme.surface,
                       border: Border.all(
                         color: Theme.of(context).colorScheme.outline
-                          .withOpacity(0.3)),
+                          .withValues(alpha: 0.3)),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Colors.black.withValues(alpha: 0.08),
                         blurRadius: 8, offset: const Offset(0, 4))]),
                     child: ListView(
                       shrinkWrap: true,
@@ -380,7 +382,7 @@ class _State extends State<EcgUploadScreen> {
 
             // ── Sexe ──────────────────────────────────────────────────────
             DropdownButtonFormField<String>(
-              value: _sexe,
+              initialValue: _sexe,
               decoration: const InputDecoration(
                 labelText: 'Sexe',
                 border: OutlineInputBorder(),
@@ -765,10 +767,10 @@ class _ReportView extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.05),
+                        color: color.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: color.withOpacity(0.3))),
+                          color: color.withValues(alpha: 0.3))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -891,7 +893,7 @@ class _ReportView extends StatelessWidget {
                           color: rankBg[i],
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: rankColors[i].withOpacity(0.5),
+                            color: rankColors[i].withValues(alpha: 0.5),
                             width: 1.5)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1025,7 +1027,7 @@ class _PrescRow extends StatelessWidget {
   final String   label;
   final String   value;
   final Color    color;
-  const _PrescRow(this.icon, this.label, this.value, this.color, {super.key});
+  const _PrescRow(this.icon, this.label, this.value, this.color);
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -15,6 +15,7 @@ from app.db.models import Rapport
 from app.services.eeg_pipeline import EEGPipeline
 from app.core.config import settings
 from app.core.paths import runtime_path
+from app.services.case_service import ensure_case_and_link
 
 router = APIRouter()
 
@@ -81,6 +82,17 @@ async def analyze_eeg(
     db.add(rapport)
     await db.commit()
     await db.refresh(rapport)
+
+    case = await ensure_case_and_link(
+        db,
+        patient_id=patient_id,
+        study_type="EEG",
+        study_id=rapport.id,
+        indication=indication,
+    )
+    result["case_id"] = case.id
+    rapport.raw_json = json.dumps(result)
+    await db.commit()
 
     return {"success": True, "result": result}
 

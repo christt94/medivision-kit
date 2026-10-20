@@ -28,6 +28,35 @@ For an offline/local run, copy `backend/.env.example` to `backend/.env` and
 leave `IMAGING_MODEL=none`. The imaging workflow will validate and store files,
 display them for review, and export reports without requiring Hugging Face.
 
+## Clinical cases, authentication, and sign-off
+
+The backend includes a unified clinical-case layer for linking ECG, EEG, and
+imaging studies to one patient workflow. It also provides local user
+authentication, clinician sign-off decisions, and append-only audit events.
+
+Register a local clinician account after starting the backend:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"clinician","full_name":"Local Clinician","password":"change-this-password"}'
+```
+
+Use the returned token with `/api/cases`. Create a case, link existing ECG,
+EEG, or imaging records through `/api/cases/{case_id}/studies`, then record the
+clinician decision through `/api/cases/{case_id}/signoff`. Existing modality
+endpoints remain compatible; the migration registry creates the new tables
+without deleting existing data.
+
+When an ECG, EEG, or imaging study is uploaded with a `patient_id`, the backend
+automatically creates or reuses that patient's open case and links the study.
+The unified report is available at `/api/cases/{case_id}/report` and always
+requires clinician sign-off before the case can be approved.
+
+For any deployment beyond local development, set a strong `SECRET_KEY`, use
+HTTPS or a trusted local-only binding, define a retention policy, and validate
+the complete workflow with de-identified data before clinical use.
+
 ## Frontend Setup
 
 ```bash
@@ -39,6 +68,11 @@ flutter run -d chrome --web-port 3000 \
 
 `API_BASE_URL` is optional for local development and can point to a deployed
 backend for mobile or desktop builds.
+
+The Flutter app now includes a **Dossiers** workspace. Log in with a local
+clinician account, create a case, link ECG/EEG/imaging record IDs, review the
+case, record a clinician sign-off, and inspect the audit timeline. The login
+token is stored locally by the app and automatically sent with API requests.
 
 ## Medical imaging module
 

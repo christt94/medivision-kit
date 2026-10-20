@@ -31,8 +31,6 @@ class _EegResultState extends State<EegResultScreen> {
 
   Map<String, dynamic> get _diag => 
       (widget.result['diagnostic'] as Map<String, dynamic>? ?? {});
-  Map<String, dynamic> get _bandes => 
-      (widget.result['bandes'] as Map<String, dynamic>? ?? {});
   Map<String, dynamic> get _meta => 
       (widget.result['meta'] as Map<String, dynamic>? ?? {});
   String get _rapportId => widget.result['rapport_id'] as String? ?? '';
@@ -130,7 +128,6 @@ class _EegResultState extends State<EegResultScreen> {
   @override
   Widget build(BuildContext context) {
     final diag = _diag;
-    final bandes = _bandes;
     final meta = _meta;
     final label = diag['label'] as String? ?? 'Normal';
     final labelFr = diag['label_fr'] as String? ?? label;
@@ -180,10 +177,10 @@ class _EegResultState extends State<EegResultScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
-                    const Icon(Icons.psychology, color: Colors.white, size: 20),
-                    const SizedBox(width: 8),
-                    const Text('DIAGNOSTIC PRINCIPAL',
+                  const Row(children: [
+                    Icon(Icons.psychology, color: Colors.white, size: 20),
+                    SizedBox(width: 8),
+                    Text('DIAGNOSTIC PRINCIPAL',
                         style: TextStyle(color: Colors.white70, fontSize: 11, letterSpacing: 1.2)),
                   ]),
                   const SizedBox(height: 8),
@@ -221,7 +218,7 @@ class _EegResultState extends State<EegResultScreen> {
               _MetricCard(label: 'Mode', value: meta['mode'] as String? ?? '—', 
                          color: green, icon: Icons.memory_outlined),
               const SizedBox(width: 12),
-              _MetricCard(label: 'Validation', value: 'AUTO', 
+              const _MetricCard(label: 'Validation', value: 'AUTO', 
                          color: green, icon: Icons.check_circle_outline),
             ]),
 
@@ -293,41 +290,6 @@ class _EegResultState extends State<EegResultScreen> {
     return '${(seconds / 3600).toStringAsFixed(1)} h';
 }
 
-  // Widgets utilitaires (inchangés)
-  Widget _buildBandRow(_BandRow b) {
-    final val = (b.value as num?)?.toDouble() ?? 0.0;
-    final logVal = val > 0 ? (1 + (val * 1e8).clamp(0, 100)) / 101 : 0.0;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(children: [
-        SizedBox(width: 80, child: Text(b.name, 
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500))),
-        SizedBox(width: 60, child: Text(b.freq, 
-            style: TextStyle(fontSize: 11, color: Colors.grey.shade500))),
-        Expanded(child: ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: logVal.clamp(0.0, 1.0),
-            backgroundColor: Colors.grey.shade100,
-            valueColor: AlwaysStoppedAnimation(b.color),
-            minHeight: 10,
-          ),
-        )),
-        const SizedBox(width: 8),
-        SizedBox(width: 80, child: Text(val.toStringAsExponential(2),
-            textAlign: TextAlign.right,
-            style: TextStyle(fontSize: 10, color: Colors.grey.shade500, fontFamily: 'monospace'))),
-      ]),
-    );
-  }
-}
-
-// Classes utilitaires (inchangées)
-class _BandRow {
-  final String name, freq;
-  final dynamic value;
-  final Color color;
-  const _BandRow(this.name, this.freq, this.value, this.color);
 }
 
 class _MetricCard extends StatelessWidget {
@@ -349,7 +311,7 @@ class _MetricCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [BoxShadow(
-          color: Colors.black.withOpacity(0.05),
+          color: Colors.black.withValues(alpha: 0.05),
           blurRadius: 6, 
           offset: const Offset(0, 2),
         )],

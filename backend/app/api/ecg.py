@@ -18,6 +18,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.ecg_pipeline import ECGPipeline
 from app.services.rapport_service import save_rapport, get_rapports_by_patient
 from app.db.database import get_db
+from app.services.case_service import ensure_case_and_link
 
 router   = APIRouter()
 pipeline = ECGPipeline()
@@ -73,10 +74,22 @@ async def analyze_ecg(
 
     # ── Persist to DB ─────────────────────────────────────────────────
     result['patient_id'] = patient_id.strip()  # guarantee top-level UUID
+    saved_rapport = None
     try:
-        await save_rapport(db, result)
+        saved_rapport = await save_rapport(db, result)
     except Exception as e:
         print(f"[DB] Failed to save rapport: {e}")
+
+    if patient_id.strip() and saved_rapport is not None:
+        case = await ensure_case_and_link(
+            db,
+            patient_id=patient_id,
+            study_type="ECG",
+            study_id=saved_rapport.id,
+            indication=indication,
+        )
+        await db.commit()
+        result["case_id"] = case.id
 
     return result
 

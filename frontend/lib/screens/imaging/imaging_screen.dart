@@ -116,11 +116,13 @@ class _ImagingScreenState extends State<ImagingScreen> {
                 'notes': notesController.text,
                 'reviewed_by': 'clinician',
               });
-              if (!mounted) return;
+              if (!dialogContext.mounted) return;
               Navigator.of(dialogContext).pop();
+              if (!mounted) return;
               _showMessage('Revue clinique enregistrée.');
               await _loadStudies();
             } catch (error) {
+              if (!dialogContext.mounted || !mounted) return;
               setDialogState(() => saving = false);
               _showMessage('Erreur lors de la revue : $error');
             }
@@ -134,6 +136,7 @@ class _ImagingScreenState extends State<ImagingScreen> {
                 fileName: 'rapport_imagerie_${study['id'].toString().substring(0, 8)}.pdf',
               );
             } catch (error) {
+              if (!mounted) return;
               _showMessage('Erreur PDF : $error');
             }
           }
@@ -244,7 +247,7 @@ class _ImagingScreenState extends State<ImagingScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _modality,
+              initialValue: _modality,
               decoration: const InputDecoration(
                 labelText: 'Modalité',
                 border: OutlineInputBorder(),

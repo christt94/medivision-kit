@@ -134,7 +134,7 @@ class _State extends State<PatientFormScreen> {
 
                   // Sexe
                   DropdownButtonFormField<String>(
-                    value: _sexe,
+                    initialValue: _sexe,
                     decoration: const InputDecoration(
                       labelText: 'Sexe',
                       prefixIcon: Icon(Icons.wc),

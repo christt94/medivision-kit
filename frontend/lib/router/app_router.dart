@@ -10,11 +10,18 @@ import '../screens/eeg/eeg_rapport_screen.dart';
 import '../screens/ecg/ecg_list_screen.dart' as ecg;
 import '../screens/eeg/eeg_list_screen.dart' as eeg;
 import '../screens/imaging/imaging_screen.dart';
+import '../screens/auth/login_screen.dart';
+import '../screens/cases/cases_screen.dart';
+import '../models/clinical_case.dart';
 
 class AppRouter {
   static final router = GoRouter(
     initialLocation: '/dashboard',
     routes: [
+      GoRoute(
+        path: '/login',
+        builder: (c, s) => const LoginScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => AppShell(child: child),
         routes: [
@@ -71,6 +78,17 @@ class AppRouter {
           GoRoute(
             path: '/imaging',
             builder: (c, s) => const ImagingScreen(),
+          ),
+          GoRoute(
+            path: '/cases',
+            builder: (c, s) => const CasesScreen(),
+          ),
+          GoRoute(
+            path: '/cases/:id',
+            builder: (c, s) => CaseDetailScreen(
+              caseId: s.pathParameters['id'] ?? '',
+              initialCase: s.extra is ClinicalCase ? s.extra as ClinicalCase : null,
+            ),
           ),
           GoRoute(
             path: '/eeg/rapports/:patientId',

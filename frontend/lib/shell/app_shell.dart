@@ -5,7 +5,7 @@ class AppShell extends StatelessWidget {
   final Widget child;
   const AppShell({super.key, required this.child});
 
-  static const _routes = ['/dashboard', '/patients', '/ecg', '/eeg', '/imaging'];
+  static const _routes = ['/dashboard', '/patients', '/ecg', '/eeg', '/imaging', '/cases'];
 
   int _index(BuildContext context) {
     final loc = GoRouterState.of(context).uri.toString();
@@ -13,6 +13,7 @@ class AppShell extends StatelessWidget {
     if (loc.startsWith('/ecg')) return 2;
     if (loc.startsWith('/eeg')) return 3;
     if (loc.startsWith('/imaging')) return 4;
+    if (loc.startsWith('/cases')) return 5;
     return 0;
   }
 
@@ -74,6 +75,11 @@ class AppShell extends StatelessWidget {
                 icon: Icon(Icons.image_outlined),
                 selectedIcon: Icon(Icons.image),
                 label: Text('Imagerie'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.folder_shared_outlined),
+                selectedIcon: Icon(Icons.folder_shared),
+                label: Text('Dossiers'),
               ),
             ],
           ),

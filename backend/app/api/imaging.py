@@ -13,6 +13,7 @@ from app.core.config import settings
 from app.db.database import get_db
 from app.db.models import ImagingStudy
 from app.core.paths import runtime_path
+from app.services.case_service import ensure_case_and_link
 
 router = APIRouter()
 
@@ -116,6 +117,7 @@ async def create_imaging_study(
     patient_id: str = Form(...),
     modality: str = Form(default="XRAY"),
     indication: str = Form(default=""),
+    case_id: Optional[str] = Form(default=None),
     file: UploadFile = File(...),
     db: AsyncSession = Depends(get_db),
 ):
@@ -168,9 +170,17 @@ async def create_imaging_study(
         result_json=json.dumps(result, ensure_ascii=False),
     )
     db.add(study)
+    case = await ensure_case_and_link(
+        db,
+        patient_id=patient_id,
+        study_type="IMAGING",
+        study_id=study.id,
+        case_id=case_id,
+        indication=indication.strip(),
+    )
     await db.commit()
     await db.refresh(study)
-    return {"success": True, "study": _serialize(study)}
+    return {"success": True, "case_id": case.id, "study": _serialize(study)}
 
 
 @router.get("/studies")

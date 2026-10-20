@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import patients, ecg, stats, eeg, imaging
-from app.db.database import engine, Base
-from app.db import models  # noqa: F401
+from app.api import patients, ecg, stats, eeg, imaging, auth, cases
 from app.core.config import settings
+from app.db.migrations import run_migrations
 
 app = FastAPI(title="MediVision Kit API", version="0.1.0")
 
@@ -19,9 +18,7 @@ app.add_middleware(
 async def startup():
     if not settings.DEBUG and not settings.SECRET_KEY:
         raise RuntimeError("SECRET_KEY must be set when DEBUG=false")
-    # Create all tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    await run_migrations()
 
 @app.get("/health")
 async def health():
@@ -32,3 +29,5 @@ app.include_router(ecg.router,      prefix="/api/ecg",      tags=["ecg"])
 app.include_router(stats.router,    prefix="/api/stats",    tags=["stats"])
 app.include_router(eeg.router,       prefix="/api/eeg",       tags=["eeg"])
 app.include_router(imaging.router,   prefix="/api/imaging",   tags=["imaging"])
+app.include_router(auth.router,       prefix="/api/auth",      tags=["auth"])
+app.include_router(cases.router,      prefix="/api/cases",     tags=["cases"])

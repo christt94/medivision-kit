@@ -423,7 +423,7 @@ class _EegInterpretationScreenState extends State<EegInterpretationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _reviewLevel,
+                    initialValue: _reviewLevel,
                     decoration: const InputDecoration(
                       labelText: 'Statut de validation',
                       border: OutlineInputBorder(),
@@ -569,7 +569,7 @@ class _EegInterpretationScreenState extends State<EegInterpretationScreen> {
                             (it) => Card(
                               elevation: 0,
                               color: (it['niveau'] == 'MAJEURE' ? red : orange)
-                                  .withOpacity(0.08),
+                                  .withValues(alpha: 0.08),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -628,7 +628,7 @@ class _MetricCard extends StatelessWidget {
       width: 160,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(

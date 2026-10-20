@@ -222,7 +222,7 @@ class _DistributionChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: color?.withOpacity(0.05),
+      color: color?.withValues(alpha: 0.05),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(children: distribution.map((d) {
@@ -282,8 +282,8 @@ class _KpiCard extends StatelessWidget {
       width: 160, height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: color.withOpacity(0.08),
-        border: Border.all(color: color.withOpacity(0.2))),
+        color: color.withValues(alpha: 0.08),
+        border: Border.all(color: color.withValues(alpha: 0.2))),
       padding: const EdgeInsets.all(16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
@@ -291,14 +291,14 @@ class _KpiCard extends StatelessWidget {
           const Spacer(),
           if (onTap != null)
             Icon(Icons.arrow_forward_ios, size: 10,
-              color: color.withOpacity(0.5)),
+              color: color.withValues(alpha: 0.5)),
         ]),
         const Spacer(),
         Text(value,
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold,
             color: color)),
         Text(label,
-          style: TextStyle(fontSize: 11, color: color.withOpacity(0.8))),
+              style: TextStyle(fontSize: 11, color: color.withValues(alpha: 0.8))),
       ])));
 }
 
@@ -359,7 +359,7 @@ class _DailyEcgChart extends StatelessWidget {
         alignment: BarChartAlignment.spaceAround,
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
-        barTouchData: BarTouchData(enabled: false),
+        barTouchData: const BarTouchData(enabled: false),
         titlesData: FlTitlesData(
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -420,7 +420,7 @@ class _DailyEegChart extends StatelessWidget {
         alignment: BarChartAlignment.spaceAround,
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
-        barTouchData: BarTouchData(enabled: false),
+        barTouchData: const BarTouchData(enabled: false),
         titlesData: FlTitlesData(
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),

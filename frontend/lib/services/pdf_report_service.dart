@@ -194,7 +194,7 @@ class _RevisionDialogState extends State<_RevisionDialog>
       _sectionTitle('Statut du rapport', Icons.flag, Colors.orange),
       const SizedBox(height: 6),
       DropdownButtonFormField<String>(
-        value: _statut,
+        initialValue: _statut,
         decoration: const InputDecoration(border: OutlineInputBorder()),
         items: const [
           DropdownMenuItem(value: 'BROUILLON',
@@ -266,7 +266,7 @@ class _RevisionDialogState extends State<_RevisionDialog>
         margin: const EdgeInsets.only(bottom: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: color.withOpacity(0.4))),
+          side: BorderSide(color: color.withValues(alpha: 0.4))),
         child: Padding(
           padding: const EdgeInsets.all(14),
           child: Column(
@@ -321,7 +321,7 @@ class _RevisionDialogState extends State<_RevisionDialog>
           margin: const EdgeInsets.only(bottom: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: color.withOpacity(0.3))),
+            side: BorderSide(color: color.withValues(alpha: 0.3))),
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -401,7 +401,7 @@ class _RevisionDialogState extends State<_RevisionDialog>
           margin: const EdgeInsets.only(bottom: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: color.withOpacity(0.4), width: 1.5)),
+            side: BorderSide(color: color.withValues(alpha: 0.4), width: 1.5)),
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Column(

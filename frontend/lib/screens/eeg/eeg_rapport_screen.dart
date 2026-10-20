@@ -199,7 +199,7 @@ class _EegRapportState extends State<EegRapportScreen> {
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
@@ -210,7 +210,7 @@ class _EegRapportState extends State<EegRapportScreen> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                   decoration: BoxDecoration(
-                                    color: dColor.withOpacity(0.08),
+                                    color: dColor.withValues(alpha: 0.08),
                                     borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                                   ),
                                   child: Row(
@@ -246,12 +246,12 @@ class _EegRapportState extends State<EegRapportScreen> {
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                           decoration: BoxDecoration(
-                                            color: teal.withOpacity(0.08),
+                                            color: teal.withValues(alpha: 0.08),
                                             borderRadius: BorderRadius.circular(4),
                                           ),
                                           child: Text(
                                             'CIM-11: $cim11',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 11,
                                               color: teal,
                                               fontWeight: FontWeight.w500,

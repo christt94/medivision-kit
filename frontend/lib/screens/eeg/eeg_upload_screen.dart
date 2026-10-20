@@ -42,7 +42,7 @@ class _EegUploadState extends State<EegUploadScreen> {
   List<Map<String, dynamic>> _suggestions = [];
   Map<String, dynamic>? _selectedPatient;
 
-  String _loading_msg = '';
+  String _loadingMessage = '';
   bool _loading = false;
   bool _searching = false;
   String? _error;
@@ -148,7 +148,7 @@ class _EegUploadState extends State<EegUploadScreen> {
       setState(() {
         _loading = true;
         _error = null;
-        _loading_msg = 'Analyse EEG en cours…';
+        _loadingMessage = 'Analyse EEG en cours…';
       });
     }
 
@@ -192,7 +192,7 @@ class _EegUploadState extends State<EegUploadScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final teal = const Color(0xFF01696f);
+    const teal = Color(0xFF01696f);
     final hasPid = widget.patientId != null && widget.patientId!.isNotEmpty;
 
     return Scaffold(
@@ -209,7 +209,7 @@ class _EegUploadState extends State<EegUploadScreen> {
                 children: [
                   const CircularProgressIndicator(color: Color(0xFF01696f)),
                   const SizedBox(height: 16),
-                  Text(_loading_msg, style: theme.textTheme.bodyMedium),
+                  Text(_loadingMessage, style: theme.textTheme.bodyMedium),
                 ],
               ),
             )
@@ -226,8 +226,8 @@ class _EegUploadState extends State<EegUploadScreen> {
                       child: ListTile(
                         contentPadding: EdgeInsets.zero,
                         leading: CircleAvatar(
-                          backgroundColor: teal.withOpacity(0.1),
-                          child: Icon(Icons.person, color: teal),
+                          backgroundColor: teal.withValues(alpha: 0.1),
+                          child: const Icon(Icons.person, color: teal),
                         ),
                         title: Text(
                           _displayName,
@@ -288,10 +288,10 @@ class _EegUploadState extends State<EegUploadScreen> {
                                     dense: true,
                                     leading: CircleAvatar(
                                       radius: 16,
-                                      backgroundColor: teal.withOpacity(0.1),
+                                      backgroundColor: teal.withValues(alpha: 0.1),
                                       child: Text(
                                         ((p['prenom'] as String? ?? 'X')[0]).toUpperCase(),
-                                        style: TextStyle(color: teal, fontSize: 12),
+                                        style: const TextStyle(color: teal, fontSize: 12),
                                       ),
                                     ),
                                     title: Text(
@@ -399,7 +399,7 @@ class _EegUploadState extends State<EegUploadScreen> {
                     child: Column(
                       children: [
                         DropdownButtonFormField<String>(
-                          value: _etatVigilance,
+                          initialValue: _etatVigilance,
                           decoration: InputDecoration(
                             labelText: 'État de vigilance',
                             border: OutlineInputBorder(
@@ -416,7 +416,7 @@ class _EegUploadState extends State<EegUploadScreen> {
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<String>(
-                          value: _montage,
+                          initialValue: _montage,
                           decoration: InputDecoration(
                             labelText: 'Montage',
                             border: OutlineInputBorder(
@@ -493,7 +493,7 @@ class _EegUploadState extends State<EegUploadScreen> {
                             ),
                             decoration: BoxDecoration(
                               color: _fileBytes != null
-                                  ? teal.withOpacity(0.05)
+                                  ? teal.withValues(alpha: 0.05)
                                   : Colors.grey.shade50,
                               border: Border.all(
                                 color: _fileBytes != null
@@ -637,7 +637,7 @@ class _SectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
